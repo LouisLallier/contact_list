@@ -17,9 +17,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const ContactList = (): JSX.Element => {
-  const [contacts, setContacts] = useState<ContactListInterface>({
-    contacts: [],
-  });
+  const [contacts, setContacts] = useState<ContactListInterface[]>([]);
 
   const handleSubmit = (
     values: ContactFormValues,
