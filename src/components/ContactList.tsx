@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { Formik, Form, Field, ErrorMessage, FormikHelpers } from "formik";
+
 import * as Yup from "yup";
 import {
-  ContactListInterface,
   ContactFormValues,
   ContactInterface,
 } from "../interfaces/contactInterface";
@@ -17,12 +17,15 @@ const validationSchema = Yup.object().shape({
 });
 
 const ContactList = (): JSX.Element => {
-  const [contacts, setContacts] = useState<ContactListInterface[]>([]);
+  const [submittedContacts, setSubmittedContacts] = useState<
+    ContactInterface[]
+  >([]);
 
   const handleSubmit = (
     values: ContactFormValues,
-    { setSubmitting }: { setSubmitting: (isSubmitting: boolean) => void }
+    { setSubmitting, resetForm }: FormikHelpers<ContactFormValues>
   ) => {
+    setSubmitting(true);
     // Créer un nouveau contact à partir des valeurs du formulaire
     const newContact: ContactInterface = {
       firstName: values.firstName,
@@ -30,10 +33,11 @@ const ContactList = (): JSX.Element => {
     };
 
     // Ajouter le nouveau contact au tableau des contacts
-    setContacts((prevState) => [...prevState, newContact]);
+    setSubmittedContacts((prevState) => [...prevState, newContact]);
 
     // Réinitialiser le formulaire
     setSubmitting(false);
+    resetForm();
   };
 
   return (
